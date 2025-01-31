@@ -118,6 +118,8 @@ namespace AndonWatchDog
         {
             //this.notifyIcon1.Visible = false;
             this.WindowState = FormWindowState.Normal;
+            this.Focus();
+
         }
 
         private void MainForm_Resize(object sender, EventArgs e)

@@ -26,6 +26,10 @@ namespace AndonWatchDog
         [return: MarshalAs(UnmanagedType.Bool)]
         static extern bool SetForegroundWindow(IntPtr hWnd);
 
+
+        [DllImport("user32.dll")]
+        private static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
+
         /// <summary>
         /// The main entry point for the application.
         /// </summary>
@@ -52,6 +56,8 @@ namespace AndonWatchDog
                     {
                         if (process.Id != current.Id)
                         {
+                            ShowWindow(process.MainWindowHandle, 5);
+                            
                             SetForegroundWindow(process.MainWindowHandle);
                             break;
                         }
