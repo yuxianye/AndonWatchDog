@@ -323,5 +323,20 @@ namespace AndonWatchDog
             File.WriteAllText("webTitle.txt", textBox1.Text.Trim());
             webTitle= textBox1.Text.Trim();
         }
+
+        private void cb_Startup_CheckedChanged(object sender, EventArgs e)
+        {
+            if (cb_Startup.Checked)
+            {
+                ShortcutManagement.CreateShort();
+            }
+            else
+            { 
+                ShortcutManagement.DeleteShort();
+
+
+            }
+
+        }
     }
 }

@@ -42,6 +42,7 @@
             this.nud_interval = new System.Windows.Forms.NumericUpDown();
             this.label2 = new System.Windows.Forms.Label();
             this.textBox1 = new System.Windows.Forms.TextBox();
+            this.cb_Startup = new System.Windows.Forms.CheckBox();
             this.contextMenuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nud_interval)).BeginInit();
             this.SuspendLayout();
@@ -163,11 +164,25 @@
             this.textBox1.TabIndex = 6;
             this.textBox1.Text = "百度一下，你就知道";
             // 
+            // cb_Startup
+            // 
+            this.cb_Startup.AutoSize = true;
+            this.cb_Startup.Checked = true;
+            this.cb_Startup.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.cb_Startup.Location = new System.Drawing.Point(240, 182);
+            this.cb_Startup.Name = "cb_Startup";
+            this.cb_Startup.Size = new System.Drawing.Size(96, 16);
+            this.cb_Startup.TabIndex = 7;
+            this.cb_Startup.Text = "Auto Startup";
+            this.cb_Startup.UseVisualStyleBackColor = true;
+            this.cb_Startup.CheckedChanged += new System.EventHandler(this.cb_Startup_CheckedChanged);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(384, 261);
+            this.Controls.Add(this.cb_Startup);
             this.Controls.Add(this.textBox1);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.nud_interval);
@@ -206,6 +221,7 @@
         private System.Windows.Forms.NumericUpDown nud_interval;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.CheckBox cb_Startup;
     }
 }
 

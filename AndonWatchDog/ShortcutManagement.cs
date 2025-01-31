@@ -5,16 +5,17 @@ using System.Text;
 using IWshRuntimeLibrary;
 using System.IO;
 using System;
+using System.Reflection;
 namespace AndonWatchDog
 {
 
 
 
     /// <summary>
-    /// 创建快捷方式的类
+    /// 快捷方式管理的类
     /// </summary>
     /// <remarks></remarks>
-    public class ShortcutCreator
+    public class ShortcutManagement
     {
         //需要引入IWshRuntimeLibrary，搜索Windows Script Host Object Model
 
@@ -61,6 +62,37 @@ namespace AndonWatchDog
             string desktop = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory);//获取桌面文件夹路径
             CreateShortcut(desktop, shortcutName, targetPath, description, iconLocation);
         }
+
+
+        public static void CreateShort()
+        {
+            string shortName = Environment.GetFolderPath(Environment.SpecialFolder.Startup) + @"\AndonWatchDog.exe.lnk";
+
+            if (!System.IO.File.Exists(shortName))
+            {
+                //string sourceName = AppDomain.CurrentDomain.BaseDirectory +"AndonWatchDog.exe";
+                string sourceName = Assembly.GetExecutingAssembly().Location;
+
+                ShortcutManagement.CreateShortcut(Environment.GetFolderPath(Environment.SpecialFolder.Startup), "AndonWatchDog.exe", sourceName);
+
+            }
+
+        }
+
+        public static void DeleteShort()
+        {
+            string shortName = Environment.GetFolderPath(Environment.SpecialFolder.Startup) + @"\AndonWatchDog.exe.lnk";
+
+            if (System.IO.File.Exists(shortName))
+            {
+                System.IO.File.Delete(shortName);
+
+            }
+
+        }
+
+
+
 
     }
 
