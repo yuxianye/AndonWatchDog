@@ -40,7 +40,7 @@ namespace AndonWatchDog
                 if (File.Exists("webTitle.txt"))
                 {
                     webTitle = System.IO.File.ReadAllLines("webTitle.txt")[0];
-
+                    textBox1.Text = webTitle;
                 }
                 else
                 {
@@ -267,8 +267,11 @@ namespace AndonWatchDog
                     Debug.WriteLine("rootElement:" + rootElement.ToString());
 
                     AutomationElement address = rootElement.FindFirst(TreeScope.Descendants, new PropertyCondition(AutomationElement.NameProperty, webTitle));
+
                     if (address == null)
                     {
+                                            
+
 
                         address = rootElement.FindFirst(TreeScope.Descendants, new PropertyCondition(AutomationElement.NameProperty, webTitle));
                         if (address == null)
@@ -276,10 +279,19 @@ namespace AndonWatchDog
                             continue;
                         }
                     }
+
+
+
+
+                    //TextPattern textPattern = (TextPattern)address.GetCurrentPattern(TextPattern.Pattern);
+                    //string url = textPattern.DocumentRange.GetText(-1);
+                    //Console.WriteLine("Edge Browser URL: " + url);
+
+
+
                     // 最大化窗口
                     ShowWindow(process.MainWindowHandle, 3);
                     address.SetFocus();
-
                     // var v = address.GetCurrentPattern(ValuePattern.Pattern);
                     //ValuePattern v = (ValuePattern)address.GetCurrentPattern(ValuePattern.Pattern);
                     //Debug.WriteLine("type:" + v.GetType());
@@ -289,17 +301,27 @@ namespace AndonWatchDog
                     //    Debug.WriteLine("URL:" + v.Current.Value);
                     //}
 
+                    // 获取地址栏的文本值
+                    //ValuePattern valuePattern = address.GetCurrentPattern(ValuePattern.Pattern) as ValuePattern;
+                    //if (valuePattern != null)
+                    //{
+                    //    string url = valuePattern.Current.Value;
+                    //    Console.WriteLine("当前Edge浏览器的URL是: " + url);
+                        
+                    //}
+
+
                 }
 
             }
 
         }
 
-
-
-
-
-
-
+        private void txt_WebTitle_TextChanged(object sender, EventArgs e)
+        {
+            File.Create("webTitle.txt").Close();
+            File.WriteAllText("webTitle.txt", textBox1.Text.Trim());
+            webTitle= textBox1.Text.Trim();
+        }
     }
 }

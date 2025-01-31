@@ -40,6 +40,8 @@
             this.btn_Stop = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.nud_interval = new System.Windows.Forms.NumericUpDown();
+            this.label2 = new System.Windows.Forms.Label();
+            this.textBox1 = new System.Windows.Forms.TextBox();
             this.contextMenuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nud_interval)).BeginInit();
             this.SuspendLayout();
@@ -115,7 +117,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(86, 199);
+            this.label1.Location = new System.Drawing.Point(2, 179);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(125, 12);
             this.label1.TabIndex = 3;
@@ -123,7 +125,7 @@
             // 
             // nud_interval
             // 
-            this.nud_interval.Location = new System.Drawing.Point(217, 197);
+            this.nud_interval.Location = new System.Drawing.Point(133, 177);
             this.nud_interval.Maximum = new decimal(new int[] {
             60,
             0,
@@ -144,11 +146,30 @@
             0});
             this.nud_interval.ValueChanged += new System.EventHandler(this.nud_interval_ValueChanged);
             // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(26, 230);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(101, 12);
+            this.label2.TabIndex = 5;
+            this.label2.Text = "Watch Web Title:";
+            // 
+            // textBox1
+            // 
+            this.textBox1.Location = new System.Drawing.Point(133, 227);
+            this.textBox1.Name = "textBox1";
+            this.textBox1.Size = new System.Drawing.Size(239, 21);
+            this.textBox1.TabIndex = 6;
+            this.textBox1.Text = "百度一下，你就知道";
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(384, 261);
+            this.Controls.Add(this.textBox1);
+            this.Controls.Add(this.label2);
             this.Controls.Add(this.nud_interval);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.btn_Stop);
@@ -183,6 +204,8 @@
         private System.Windows.Forms.Button btn_Stop;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.NumericUpDown nud_interval;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.TextBox textBox1;
     }
 }
 
