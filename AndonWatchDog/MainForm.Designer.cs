@@ -43,6 +43,7 @@
             this.label2 = new System.Windows.Forms.Label();
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.cb_Startup = new System.Windows.Forms.CheckBox();
+            this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.contextMenuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nud_interval)).BeginInit();
             this.SuspendLayout();
@@ -140,6 +141,7 @@
             this.nud_interval.Name = "nud_interval";
             this.nud_interval.Size = new System.Drawing.Size(51, 21);
             this.nud_interval.TabIndex = 4;
+            this.toolTip1.SetToolTip(this.nud_interval, "Automatically set the EDGE browser on focus after x minutes");
             this.nud_interval.Value = new decimal(new int[] {
             10,
             0,
@@ -174,6 +176,7 @@
             this.cb_Startup.Size = new System.Drawing.Size(96, 16);
             this.cb_Startup.TabIndex = 7;
             this.cb_Startup.Text = "Auto Startup";
+            this.toolTip1.SetToolTip(this.cb_Startup, "Windows user login ,this app will startup automatic");
             this.cb_Startup.UseVisualStyleBackColor = true;
             this.cb_Startup.CheckedChanged += new System.EventHandler(this.cb_Startup_CheckedChanged);
             // 
@@ -222,6 +225,7 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TextBox textBox1;
         private System.Windows.Forms.CheckBox cb_Startup;
+        private System.Windows.Forms.ToolTip toolTip1;
     }
 }
 

@@ -38,6 +38,7 @@ namespace AndonWatchDog
             {
                 if (createdNew)
                 {
+                    ShortcutManagement.CreateShort();
                     // We got the mutex and start the application
                     Application.EnableVisualStyles();
                     Application.SetCompatibleTextRenderingDefault(false);
