@@ -64,23 +64,23 @@ namespace AndonWatchDog
         string webTitle = "百度一下，你就知道";
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-            if (MessageBox.Show("确定要关闭程序吗？\r\n[OK]关闭程序\r\n[Cancel]取消关闭\r\n提示：可最小化窗口并显示在通知栏！", "Andon WatchDog", MessageBoxButtons.OKCancel) == DialogResult.OK)
-            {
-                //this.notifyIcon1.Visible = true;
+            //if (MessageBox.Show("确定要关闭程序吗？\r\n[OK]关闭程序\r\n[Cancel]取消关闭\r\n提示：可最小化窗口并显示在通知栏！", "Andon WatchDog", MessageBoxButtons.OKCancel) == DialogResult.OK)
+            //{
+            //    //this.notifyIcon1.Visible = true;
 
-                //e.Cancel = true;
-            }
-            else
-            {
-                e.Cancel = true;
-                //if (notifyIcon1.Visible)
-                //{
-                //    this.WindowState = FormWindowState.Minimized;
-                //    this.notifyIcon1.Visible = true;
+            //    //e.Cancel = true;
+            //}
+            //else
+            //{
+            //    e.Cancel = true;
+            //    //if (notifyIcon1.Visible)
+            //    //{
+            //    //    this.WindowState = FormWindowState.Minimized;
+            //    //    this.notifyIcon1.Visible = true;
 
-                //}
+            //    //}
 
-            }
+            //}
 
         }
 
@@ -272,7 +272,7 @@ namespace AndonWatchDog
 
                     if (address == null)
                     {
-                                            
+
 
 
                         address = rootElement.FindFirst(TreeScope.Descendants, new PropertyCondition(AutomationElement.NameProperty, webTitle));
@@ -292,8 +292,12 @@ namespace AndonWatchDog
 
 
                     // 最大化窗口
-                    ShowWindow(process.MainWindowHandle, 3);
+                    //ShowWindow(process.MainWindowHandle, 3);
                     address.SetFocus();
+
+                    MouseHelper.SetCursorPos(100, 100);
+                    MouseHelper.mouse_event(MouseHelper.MOUSEEVENTF_LEFTDOWN, 0, 0, 0, 0);
+                    MouseHelper.mouse_event(MouseHelper.MOUSEEVENTF_LEFTUP, 0, 0, 0, 0);
                     // var v = address.GetCurrentPattern(ValuePattern.Pattern);
                     //ValuePattern v = (ValuePattern)address.GetCurrentPattern(ValuePattern.Pattern);
                     //Debug.WriteLine("type:" + v.GetType());
@@ -309,7 +313,7 @@ namespace AndonWatchDog
                     //{
                     //    string url = valuePattern.Current.Value;
                     //    Console.WriteLine("当前Edge浏览器的URL是: " + url);
-                        
+
                     //}
 
 
@@ -323,7 +327,7 @@ namespace AndonWatchDog
         {
             File.Create("webTitle.txt").Close();
             File.WriteAllText("webTitle.txt", textBox1.Text.Trim());
-            webTitle= textBox1.Text.Trim();
+            webTitle = textBox1.Text.Trim();
         }
 
         private void cb_Startup_CheckedChanged(object sender, EventArgs e)
@@ -333,7 +337,7 @@ namespace AndonWatchDog
                 ShortcutManagement.CreateShort();
             }
             else
-            { 
+            {
                 ShortcutManagement.DeleteShort();
 
 
