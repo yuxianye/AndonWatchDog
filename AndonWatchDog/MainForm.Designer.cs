@@ -58,18 +58,19 @@
             // 
             // contextMenuStrip1
             // 
+            this.contextMenuStrip1.ImageScalingSize = new System.Drawing.Size(24, 24);
             this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.showMainToolStripMenuItem,
             this.startToolStripMenuItem,
             this.stopToolStripMenuItem,
             this.exitToolStripMenuItem});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(141, 92);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(176, 124);
             // 
             // showMainToolStripMenuItem
             // 
             this.showMainToolStripMenuItem.Name = "showMainToolStripMenuItem";
-            this.showMainToolStripMenuItem.Size = new System.Drawing.Size(140, 22);
+            this.showMainToolStripMenuItem.Size = new System.Drawing.Size(175, 30);
             this.showMainToolStripMenuItem.Text = "Show Main";
             this.showMainToolStripMenuItem.Click += new System.EventHandler(this.showMainToolStripMenuItem_Click);
             // 
@@ -77,30 +78,31 @@
             // 
             this.startToolStripMenuItem.Enabled = false;
             this.startToolStripMenuItem.Name = "startToolStripMenuItem";
-            this.startToolStripMenuItem.Size = new System.Drawing.Size(140, 22);
+            this.startToolStripMenuItem.Size = new System.Drawing.Size(175, 30);
             this.startToolStripMenuItem.Text = "Start";
             this.startToolStripMenuItem.Click += new System.EventHandler(this.startToolStripMenuItem_Click);
             // 
             // stopToolStripMenuItem
             // 
             this.stopToolStripMenuItem.Name = "stopToolStripMenuItem";
-            this.stopToolStripMenuItem.Size = new System.Drawing.Size(140, 22);
+            this.stopToolStripMenuItem.Size = new System.Drawing.Size(175, 30);
             this.stopToolStripMenuItem.Text = "Stop";
             this.stopToolStripMenuItem.Click += new System.EventHandler(this.stopToolStripMenuItem_Click);
             // 
             // exitToolStripMenuItem
             // 
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(140, 22);
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(175, 30);
             this.exitToolStripMenuItem.Text = "Exit";
             this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
             // 
             // btn_Start
             // 
             this.btn_Start.Enabled = false;
-            this.btn_Start.Location = new System.Drawing.Point(50, 60);
+            this.btn_Start.Location = new System.Drawing.Point(75, 90);
+            this.btn_Start.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.btn_Start.Name = "btn_Start";
-            this.btn_Start.Size = new System.Drawing.Size(100, 60);
+            this.btn_Start.Size = new System.Drawing.Size(150, 90);
             this.btn_Start.TabIndex = 1;
             this.btn_Start.Text = "Start";
             this.btn_Start.UseVisualStyleBackColor = true;
@@ -108,9 +110,10 @@
             // 
             // btn_Stop
             // 
-            this.btn_Stop.Location = new System.Drawing.Point(240, 60);
+            this.btn_Stop.Location = new System.Drawing.Point(360, 90);
+            this.btn_Stop.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.btn_Stop.Name = "btn_Stop";
-            this.btn_Stop.Size = new System.Drawing.Size(100, 60);
+            this.btn_Stop.Size = new System.Drawing.Size(150, 90);
             this.btn_Stop.TabIndex = 2;
             this.btn_Stop.Text = "Stop";
             this.btn_Stop.UseVisualStyleBackColor = true;
@@ -119,15 +122,17 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(2, 179);
+            this.label1.Location = new System.Drawing.Point(3, 268);
+            this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(125, 12);
+            this.label1.Size = new System.Drawing.Size(188, 18);
             this.label1.TabIndex = 3;
             this.label1.Text = "Watch interval(min):";
             // 
             // nud_interval
             // 
-            this.nud_interval.Location = new System.Drawing.Point(133, 177);
+            this.nud_interval.Location = new System.Drawing.Point(200, 266);
+            this.nud_interval.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.nud_interval.Maximum = new decimal(new int[] {
             60,
             0,
@@ -139,7 +144,7 @@
             0,
             0});
             this.nud_interval.Name = "nud_interval";
-            this.nud_interval.Size = new System.Drawing.Size(51, 21);
+            this.nud_interval.Size = new System.Drawing.Size(76, 28);
             this.nud_interval.TabIndex = 4;
             this.toolTip1.SetToolTip(this.nud_interval, "Automatically set the EDGE browser on focus after x minutes");
             this.nud_interval.Value = new decimal(new int[] {
@@ -152,17 +157,19 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(26, 230);
+            this.label2.Location = new System.Drawing.Point(39, 345);
+            this.label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(101, 12);
+            this.label2.Size = new System.Drawing.Size(152, 18);
             this.label2.TabIndex = 5;
             this.label2.Text = "Watch Web Title:";
             // 
             // textBox1
             // 
-            this.textBox1.Location = new System.Drawing.Point(133, 227);
+            this.textBox1.Location = new System.Drawing.Point(200, 340);
+            this.textBox1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(239, 21);
+            this.textBox1.Size = new System.Drawing.Size(356, 28);
             this.textBox1.TabIndex = 6;
             this.textBox1.Text = "百度一下，你就知道";
             // 
@@ -171,9 +178,10 @@
             this.cb_Startup.AutoSize = true;
             this.cb_Startup.Checked = true;
             this.cb_Startup.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.cb_Startup.Location = new System.Drawing.Point(240, 182);
+            this.cb_Startup.Location = new System.Drawing.Point(360, 273);
+            this.cb_Startup.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.cb_Startup.Name = "cb_Startup";
-            this.cb_Startup.Size = new System.Drawing.Size(96, 16);
+            this.cb_Startup.Size = new System.Drawing.Size(142, 22);
             this.cb_Startup.TabIndex = 7;
             this.cb_Startup.Text = "Auto Startup";
             this.toolTip1.SetToolTip(this.cb_Startup, "Windows user login ,this app will startup automatic");
@@ -182,9 +190,9 @@
             // 
             // MainForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 18F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(384, 261);
+            this.ClientSize = new System.Drawing.Size(576, 392);
             this.Controls.Add(this.cb_Startup);
             this.Controls.Add(this.textBox1);
             this.Controls.Add(this.label2);
@@ -195,6 +203,7 @@
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.HelpButton = true;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.MaximizeBox = false;
             this.Name = "MainForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;

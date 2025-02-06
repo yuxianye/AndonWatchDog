@@ -39,6 +39,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -52,7 +53,8 @@
     <Reference Include="UIAutomationTypes" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="MouseHelper.cs" />
+    <Compile Include="ConfigHelper.cs" />
+    <Compile Include="WinAPI.cs" />
     <Compile Include="ShortcutManagement.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
@@ -99,9 +101,6 @@
     </COMReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="interval.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <Content Include="WatchDog-28.ico" />
     <Content Include="webTitle.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
