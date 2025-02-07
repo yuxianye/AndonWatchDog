@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Automation;
 
 namespace AndonWatchDog
@@ -64,7 +61,7 @@ namespace AndonWatchDog
 
 
         [DllImport("user32.dll")]
-        private static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
+        public static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
 
 
         public static void SetWindowsTop(string webTitle)
@@ -113,7 +110,7 @@ namespace AndonWatchDog
 
 
                     // 最大化窗口
-                    ShowWindow(process.MainWindowHandle, 3);
+                    //ShowWindow(process.MainWindowHandle, 3);
                     address.SetFocus();
 
 
@@ -143,22 +140,30 @@ namespace AndonWatchDog
         }
 
 
-
-        public static void FindEdgePageByTitle(string webTitle)
+        /// <summary>
+        /// 在浏览器进程里面，找到指定标题的窗口，并设置窗口获得焦点
+        /// Note:Edge 非最小化状态可用
+        /// </summary>
+        /// <param name="procsEdge"></param>
+        /// <param name="webTitle"></param>
+        /// <returns></returns>
+        public static bool SetPageGetFocusByTitle(string webTitle)
         {
             Process[] procsEdge = Process.GetProcessesByName("msedge");
             Debug.WriteLine("procsEdge:" + procsEdge.Length);
 
+            bool result = false;
             foreach (Process process in procsEdge)
             {
                 // the chrome process must have a window
                 if (process.MainWindowHandle == IntPtr.Zero)
                 {
-                    ShowWindow(process.MainWindowHandle, 1);
-
+                    //ShowWindow(process.MainWindowHandle, 1);
                     continue;
                 }
-
+                // 最大化窗口
+                //ShowWindow(process.MainWindowHandle, 11);
+                ShowWindow(process.MainWindowHandle, 9);
                 AutomationElementCollection roots = AutomationElement.RootElement.FindAll(TreeScope.Element | TreeScope.Children,
                     new AndCondition(new PropertyCondition(AutomationElement.ProcessIdProperty, process.Id),
                     new PropertyCondition(AutomationElement.ClassNameProperty, "Chrome_WidgetWin_1")));
@@ -190,9 +195,9 @@ namespace AndonWatchDog
 
 
                     // 最大化窗口
-                    ShowWindow(process.MainWindowHandle, 3);
+                    //ShowWindow(process.MainWindowHandle, 3);
                     address.SetFocus();
-
+                    result = true;
 
                     // var v = address.GetCurrentPattern(ValuePattern.Pattern);
                     //ValuePattern v = (ValuePattern)address.GetCurrentPattern(ValuePattern.Pattern);
@@ -217,8 +222,89 @@ namespace AndonWatchDog
 
             }
 
+            return result;
         }
 
+
+        public static string GetURL()
+        {
+            Process[] procsChrome = Process.GetProcessesByName("msedge");
+
+            foreach (Process chrome in procsChrome)
+            {
+                if (chrome.MainWindowHandle == IntPtr.Zero)
+                    continue;
+
+                AutomationElement root = AutomationElement.FromHandle(chrome.MainWindowHandle);
+
+                if (root == null)
+                    return null;
+
+                Condition conditions = new AndCondition( // using multiple conditions which seems to be faster and descibe URL bar
+                    new PropertyCondition(AutomationElement.ProcessIdProperty, chrome.Id),
+                    new PropertyCondition(AutomationElement.IsControlElementProperty, true),
+                    new PropertyCondition(AutomationElement.IsContentElementProperty, true),
+                    new PropertyCondition(AutomationElement.ControlTypeProperty, ControlType.Edit));
+
+                AutomationElement urlbar = root.FindFirst(TreeScope.Descendants, conditions);
+                return (string)urlbar.GetCurrentPropertyValue(ValuePatternIdentifiers.ValueProperty);
+            }
+
+            return null;
+        }
+
+
+        public static string GetURL2()
+        {
+            Process[] procsChrome = Process.GetProcessesByName("msedge");
+            StringBuilder sb = new StringBuilder();
+            foreach (Process chrome in procsChrome)
+            {
+                if (chrome.MainWindowHandle == IntPtr.Zero)
+                    continue;
+
+                AutomationElement root = AutomationElement.FromHandle(chrome.MainWindowHandle);
+
+                if (root == null)
+                    return null;
+
+                Condition conditions = new AndCondition( // using multiple conditions which seems to be faster and descibe URL bar
+                    new PropertyCondition(AutomationElement.ProcessIdProperty, chrome.Id),
+                    new PropertyCondition(AutomationElement.IsControlElementProperty, true),
+                    new PropertyCondition(AutomationElement.IsContentElementProperty, true),
+                    new PropertyCondition(AutomationElement.ControlTypeProperty, ControlType.Edit));
+
+                AutomationElement urlbar = root.FindFirst(TreeScope.Descendants, conditions);
+                string url = (string)urlbar.GetCurrentPropertyValue(ValuePatternIdentifiers.ValueProperty);
+                Debug.Print(url);
+                //return (string)urlbar.GetCurrentPropertyValue(ValuePatternIdentifiers.ValueProperty);
+                sb.AppendLine(url);
+            }
+
+            return sb.ToString();
+        }
+
+
+        public static string GetChromeUrl(Process process)
+        {
+            if (process == null)
+                throw new ArgumentNullException("process");
+            if (process.MainWindowHandle == IntPtr.Zero)
+                return null;
+            AutomationElement element = AutomationElement.FromHandle(process.MainWindowHandle);
+            if (element == null)
+                return null;
+
+            Condition conditions = new AndCondition( // using multiple conditions which seems to be faster and descibe URL bar
+                   new PropertyCondition(AutomationElement.ProcessIdProperty, process.Id),
+                   new PropertyCondition(AutomationElement.IsControlElementProperty, true),
+                    new PropertyCondition(AutomationElement.IsContentElementProperty, true),
+                    new PropertyCondition(AutomationElement.ControlTypeProperty, ControlType.Edit));
+
+            AutomationElement edit = element.FindFirst(TreeScope.Children, conditions);
+            //return ((ValuePattern)edit.GetCurrentPattern(ValuePattern.Pattern)).Current.Value as string;
+            return (string)edit.GetCurrentPropertyValue(ValuePatternIdentifiers.ValueProperty);
+        }
 
 
 
@@ -228,9 +314,6 @@ namespace AndonWatchDog
     //MouseHelper.SetCursorPos(Form1.point.X, Form1.point.Y);
     //MouseHelper.mouse_event(MouseHelper.MOUSEEVENTF_LEFTDOWN, 0, 0, 0, 0);
     //MouseHelper.mouse_event(MouseHelper.MOUSEEVENTF_LEFTUP, 0, 0, 0, 0);
-
-
-
 
 
 

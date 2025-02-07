@@ -100,7 +100,7 @@
             // 
             this.btn_Start.Enabled = false;
             this.btn_Start.Location = new System.Drawing.Point(75, 90);
-            this.btn_Start.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.btn_Start.Margin = new System.Windows.Forms.Padding(4);
             this.btn_Start.Name = "btn_Start";
             this.btn_Start.Size = new System.Drawing.Size(150, 90);
             this.btn_Start.TabIndex = 1;
@@ -111,7 +111,7 @@
             // btn_Stop
             // 
             this.btn_Stop.Location = new System.Drawing.Point(360, 90);
-            this.btn_Stop.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.btn_Stop.Margin = new System.Windows.Forms.Padding(4);
             this.btn_Stop.Name = "btn_Stop";
             this.btn_Stop.Size = new System.Drawing.Size(150, 90);
             this.btn_Stop.TabIndex = 2;
@@ -122,7 +122,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(3, 268);
+            this.label1.Location = new System.Drawing.Point(37, 225);
             this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(188, 18);
@@ -131,8 +131,8 @@
             // 
             // nud_interval
             // 
-            this.nud_interval.Location = new System.Drawing.Point(200, 266);
-            this.nud_interval.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.nud_interval.Location = new System.Drawing.Point(234, 223);
+            this.nud_interval.Margin = new System.Windows.Forms.Padding(4);
             this.nud_interval.Maximum = new decimal(new int[] {
             60,
             0,
@@ -157,7 +157,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(39, 345);
+            this.label2.Location = new System.Drawing.Point(73, 320);
             this.label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(152, 18);
@@ -166,20 +166,20 @@
             // 
             // textBox1
             // 
-            this.textBox1.Location = new System.Drawing.Point(200, 340);
-            this.textBox1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.textBox1.Location = new System.Drawing.Point(234, 317);
+            this.textBox1.Margin = new System.Windows.Forms.Padding(4);
             this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(356, 28);
+            this.textBox1.Size = new System.Drawing.Size(295, 28);
             this.textBox1.TabIndex = 6;
-            this.textBox1.Text = "百度一下，你就知道";
+            this.textBox1.Text = "GEFASOFT Legato Montage";
             // 
             // cb_Startup
             // 
             this.cb_Startup.AutoSize = true;
             this.cb_Startup.Checked = true;
             this.cb_Startup.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.cb_Startup.Location = new System.Drawing.Point(360, 273);
-            this.cb_Startup.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.cb_Startup.Location = new System.Drawing.Point(394, 230);
+            this.cb_Startup.Margin = new System.Windows.Forms.Padding(4);
             this.cb_Startup.Name = "cb_Startup";
             this.cb_Startup.Size = new System.Drawing.Size(142, 22);
             this.cb_Startup.TabIndex = 7;
@@ -200,15 +200,14 @@
             this.Controls.Add(this.label1);
             this.Controls.Add(this.btn_Stop);
             this.Controls.Add(this.btn_Start);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.HelpButton = true;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Margin = new System.Windows.Forms.Padding(4);
             this.MaximizeBox = false;
             this.Name = "MainForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Andon WatchDog";
-            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.MainForm_FormClosed);
             this.Load += new System.EventHandler(this.MainForm_Load);
             this.Resize += new System.EventHandler(this.MainForm_Resize);

@@ -6,9 +6,9 @@ using System.Runtime.InteropServices;
 // 控制。更改这些特性值可修改
 // 与程序集关联的信息。
 [assembly: AssemblyTitle("AndonWatchDog")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("Develop by Yu Xianye")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("DXC Technology")]
 [assembly: AssemblyProduct("AndonWatchDog")]
 [assembly: AssemblyCopyright("Copyright ©  2025")]
 [assembly: AssemblyTrademark("")]

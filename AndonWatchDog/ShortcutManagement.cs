@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using IWshRuntimeLibrary;
-using System.IO;
+﻿using IWshRuntimeLibrary;
 using System;
+using System.IO;
 using System.Reflection;
 namespace AndonWatchDog
 {

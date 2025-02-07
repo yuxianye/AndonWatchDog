@@ -1,25 +1,16 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Diagnostics;
-using System.Diagnostics.Eventing.Reader;
-using System.Drawing;
-using System.IO;
-using System.Linq;
-using System.Net;
-using System.Runtime.InteropServices;
-using System.Security.Policy;
-using System.Text;
-using System.Threading;
-using System.Timers;
-using System.Windows.Automation;
 using System.Windows.Forms;
 
 namespace AndonWatchDog
 {
     public partial class MainForm : Form
     {
+
+        int interval = 1000 * 60 * 1;
+        System.Threading.Timer timer;
+        string webTitle = "百度一下，你就知道";
+
         public MainForm()
         {
             InitializeComponent();
@@ -30,6 +21,7 @@ namespace AndonWatchDog
                 nud_interval.Value = tmpInterval;
 
                 textBox1.Text = ConfigHelper.GetAppSetting("WebTitle");
+                webTitle = textBox1.Text;
 
                 var autoStartup = ConfigHelper.GetAppSetting("AutoStartup").ToLower();
                 if (autoStartup == "true")
@@ -41,38 +33,59 @@ namespace AndonWatchDog
                     cb_Startup.Checked = false;
                 }
 
+                Logger.Info($"Interval:{tmpInterval}");
+                Logger.Info($"WebTitle:{textBox1.Text}");
+                Logger.Info($"AutoStartup:{autoStartup}");
+
             }
-            catch
+            catch (Exception ex)
             {
-
+                Logger.Error(ex.Message);
 
             }
+
         }
 
 
+        //private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
+        //{
+        //if (MessageBox.Show("确定要关闭程序吗？\r\n[OK]关闭程序\r\n[Cancel]取消关闭\r\n提示：可最小化窗口并显示在通知栏！", "Andon WatchDog", MessageBoxButtons.OKCancel) == DialogResult.OK)
+        //{
+        //    //this.notifyIcon1.Visible = true;
 
-        int interval = 1000 * 60 * 1;
-        System.Threading.Timer timer;
-        string webTitle = "百度一下，你就知道";
-        private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
+        //    //e.Cancel = true;
+        //}
+        //else
+        //{
+        //    e.Cancel = true;
+        //    //if (notifyIcon1.Visible)
+        //    //{
+        //    //    this.WindowState = FormWindowState.Minimized;
+        //    //    this.notifyIcon1.Visible = true;
+
+        //    //}
+
+        //}
+
+        //}
+
+        private void MainForm_Resize(object sender, EventArgs e)
         {
-            //if (MessageBox.Show("确定要关闭程序吗？\r\n[OK]关闭程序\r\n[Cancel]取消关闭\r\n提示：可最小化窗口并显示在通知栏！", "Andon WatchDog", MessageBoxButtons.OKCancel) == DialogResult.OK)
-            //{
-            //    //this.notifyIcon1.Visible = true;
+            if (this.WindowState == FormWindowState.Minimized)
+            {
 
-            //    //e.Cancel = true;
-            //}
-            //else
-            //{
-            //    e.Cancel = true;
-            //    //if (notifyIcon1.Visible)
-            //    //{
-            //    //    this.WindowState = FormWindowState.Minimized;
-            //    //    this.notifyIcon1.Visible = true;
+                this.ShowInTaskbar = false;
+                //this.notifyIcon1.Visible = true;
 
-            //    //}
+            }
 
-            //}
+            if (this.WindowState == FormWindowState.Normal)
+            {
+
+                this.ShowInTaskbar = true;
+                //this.notifyIcon1.Visible = false;
+
+            }
 
         }
 
@@ -93,6 +106,8 @@ namespace AndonWatchDog
             btn_Stop.Enabled = false;
             this.startToolStripMenuItem.Enabled = true;
             this.stopToolStripMenuItem.Enabled = false;
+            Logger.Info($"Stop");
+
         }
 
         private void startToolStripMenuItem_Click(object sender, EventArgs e)
@@ -104,6 +119,8 @@ namespace AndonWatchDog
             btn_Stop.Enabled = true;
             this.startToolStripMenuItem.Enabled = false;
             this.stopToolStripMenuItem.Enabled = true;
+            Logger.Info($"Start");
+
         }
 
         private void showMainToolStripMenuItem_Click(object sender, EventArgs e)
@@ -111,26 +128,6 @@ namespace AndonWatchDog
             //this.notifyIcon1.Visible = false;
             this.WindowState = FormWindowState.Normal;
             this.Focus();
-
-        }
-
-        private void MainForm_Resize(object sender, EventArgs e)
-        {
-            //if (this.WindowState == FormWindowState.Minimized)
-            //{
-
-            //    this.ShowInTaskbar = false;
-            //    //this.notifyIcon1.Visible = true;
-
-            //}
-
-            //if (this.WindowState == FormWindowState.Normal)
-            //{
-
-            //    this.ShowInTaskbar = true;
-            //    //this.notifyIcon1.Visible = false;
-
-            //}
 
         }
 
@@ -162,7 +159,7 @@ namespace AndonWatchDog
 
             //File.WriteAllText("interval.txt", ((int)nud_interval.Value).ToString());
 
-            ConfigHelper.AddAppSetting("", ((int)nud_interval.Value).ToString());
+            ConfigHelper.AddAppSetting("Interval", ((int)nud_interval.Value).ToString());
 
             if (btn_Stop.Enabled == true && btn_Start.Enabled == false)
             {
@@ -170,20 +167,57 @@ namespace AndonWatchDog
                 Debug.Print("nud_interval_ValueChanged:" + result.ToString());
 
             }
+            Logger.Info($"interval changed to {interval}");
 
         }
 
         private void MainForm_Load(object sender, EventArgs e)
         {
-            string c = Environment.GetEnvironmentVariable("computername");
-            Debug.Print("GetEnvironmentVariable:" + c);
-
-            string d = Dns.GetHostEntry("localhost").HostName;
-            Debug.Print("GetHostEntry:" + d);
-
             timer = new System.Threading.Timer(timer_Callback, null, interval, interval);
-            //this.WindowState = FormWindowState.Minimized;
+            this.WindowState = FormWindowState.Minimized;
+            Logger.Info($"Timer start {interval}");
+            //toolStripStatusLabel1.Text = "program start";
+
         }
+
+
+        private void MainForm_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            this.notifyIcon1.Visible = false;
+            Logger.Info($"Main Form Closed");
+
+        }
+
+
+
+        private void txt_WebTitle_TextChanged(object sender, EventArgs e)
+        {
+            //File.Create("webTitle.txt").Close();
+            //File.WriteAllText("webTitle.txt", textBox1.Text.Trim());
+            ConfigHelper.AddAppSetting("WebTitle", textBox1.Text.Trim());
+            webTitle = textBox1.Text.Trim();
+            Logger.Info($"Web Title Text Changed to {textBox1.Text.Trim()}");
+
+
+        }
+
+        private void cb_Startup_CheckedChanged(object sender, EventArgs e)
+        {
+            if (cb_Startup.Checked)
+            {
+                ShortcutManagement.CreateShort();
+                Logger.Info($"auto Startup created");
+
+            }
+            else
+            {
+                ShortcutManagement.DeleteShort();
+                Logger.Info($"auto Startup delete");
+
+            }
+
+        }
+
 
         private void timer_Callback(object state)
         {
@@ -191,32 +225,109 @@ namespace AndonWatchDog
             //2、打开edge浏览器设置全屏，设置网址
             //3、设置焦点
             //4、鼠标点击
-            var edgeProcess = Process.GetProcessesByName("msedge");
-            if (!edgeProcess.Any())
+
+
+            //var edgeProcess = Process.GetProcessesByName("msedge");
+            bool isSet = WinAPI.SetPageGetFocusByTitle(webTitle);
+
+
+            if (!isSet)
             {
-                Process process_cmd = new Process();
-                process_cmd.StartInfo.FileName = "cmd.exe";//进程打开文件名为“cmd”
+                Logger.Info($"没找到【{webTitle}】");
+                //toolStripStatusLabel1.Text = $"没找到【{webTitle}】";
 
-                process_cmd.StartInfo.RedirectStandardInput = true;//是否可以输入
-                process_cmd.StartInfo.RedirectStandardOutput = true;//是否可以输出
-
-                process_cmd.StartInfo.CreateNoWindow = true;//不创建窗体 也就是隐藏窗体
-                process_cmd.StartInfo.UseShellExecute = false;//是否使用系统shell执行，否
-
-                process_cmd.Start();
                 var url = ConfigHelper.GetAppSetting("AutoOpenUrl");
-                process_cmd.StandardInput.WriteLine($"cd C:/Program Files (x86)/Microsoft/Edge/Application && msedge.exe --kiosk {url} --edge-kiosk-type=fullscreen");
-                //process_cmd.StandardInput.WriteLine($"cd C:/Program Files (x86)/Microsoft/Edge/Application && msedge.exe --kiosk {url} --edge-kiosk-type=fullscreen  --kiosk-idle-timeout-minutes=1");
-                //process_cmd.StandardInput.WriteLine($"start microsoft-edge:{url} --kiosk --edge-kiosk-type=fullscreen");
-                //Thread.Sleep(3000);//延时
+                url = string.Format(url, DomainHelper.GetFullMachineName());
+                Debug.Print("url:" + url);
+                Logger.Info($"启动新Edge, {url}");
+
+                EdgeHelper.StartFullScreenEdge(url);
+                Logger.Info($"新Edge启动完成");
 
             }
-            else
-            {
-                //浏览器打开了，但是网页没打开，打开网页
-                WinAPI.SetWindowsTop(ConfigHelper.GetAppSetting("WebTitle"));
 
-            }
+
+
+            //if (!edgeProcess.Any())
+            //{
+            //    //1、检查edge是否打开
+            //    //2、打开edge浏览器设置全屏，设置网址
+            //    var url = ConfigHelper.GetAppSetting("AutoOpenUrl");
+            //    url = string.Format(url, DomainHelper.GetFullMachineName());
+            //    Debug.Print("url:" + url);
+            //    EdgeHelper.StartFullScreenEdge(url);
+            //}
+            //else
+            //{
+
+
+            //    bool isOpenedPage = WinAPI.IsPageSetFocus(edgeProcess, ConfigHelper.GetAppSetting("WebTitle"));
+            //    if (isOpenedPage)
+            //    {
+
+
+            //    }
+            //    else
+            //    {
+            //        var url = ConfigHelper.GetAppSetting("AutoOpenUrl");
+            //        url = string.Format(url, DomainHelper.GetFullMachineName());
+            //        Debug.Print("url:" + url);
+            //        EdgeHelper.StartFullScreenEdge(url);
+
+            //    }
+
+
+            //foreach (var edge in edgeProcess)
+            //{
+            //    if (edge.MainWindowHandle == IntPtr.Zero)
+            //    {
+            //        //WinAPI.ShowWindow(edge.MainWindowHandle, 1);
+            //        continue;
+            //    }
+            //    AutomationElementCollection roots = AutomationElement.RootElement.FindAll(TreeScope.Element | TreeScope.Children,
+            //new AndCondition(new PropertyCondition(AutomationElement.ProcessIdProperty, edge.Id),
+            //new PropertyCondition(AutomationElement.ClassNameProperty, "Chrome_WidgetWin_1")));
+            //    Debug.WriteLine("roots:" + roots.Count);
+
+            //    foreach (AutomationElement rootElement in roots)
+            //    {
+            //        Debug.WriteLine("rootElement:" + rootElement.ToString());
+
+            //        AutomationElement address = rootElement.FindFirst(TreeScope.Descendants, new PropertyCondition(AutomationElement.NameProperty, webTitle));
+
+            //        if (address == null)
+            //        {
+
+            //            address = rootElement.FindFirst(TreeScope.Descendants, new PropertyCondition(AutomationElement.NameProperty, webTitle));
+            //            if (address == null)
+            //            {
+            //                continue;
+            //            }
+            //        }
+            //        // 最大化窗口
+            //        //ShowWindow(process.MainWindowHandle, 3);
+            //        address.SetFocus();
+
+            //    }
+            //}
+
+            //string url = WinAPI.GetURL2(edge);
+            //Debug.Print("GetChromeUrl:" + url);
+
+            //string url = WinAPI.GetURL2();
+            //foreach (var edge in edgeProcess)
+            //{
+            //    string url=WinAPI.GetURL2(edge);
+            //    Debug.Print("GetChromeUrl:" + url);
+
+            //}
+            //var geturl = WinAPI.GetURL2();
+            //Debug.Print("url:" + geturl);
+
+            ////浏览器打开了，但是网页没打开，打开网页
+            //WinAPI.SetWindowsTop(ConfigHelper.GetAppSetting("WebTitle"));
+
+            //}
 
 
 
@@ -230,41 +341,15 @@ namespace AndonWatchDog
             WinAPI.mouse_event(WinAPI.MOUSEEVENTF_LEFTDOWN, 0, 0, 0, 0);
             WinAPI.mouse_event(WinAPI.MOUSEEVENTF_LEFTUP, 0, 0, 0, 0);
 
-
+            Logger.Info($"鼠标点击 X:{X}  Y:{Y}");
+            //toolStripStatusLabel1.Text = $"executed at {DateTime.Now.ToString("yyyy-MM--dd HH:mm:ss")}】";
+            
             Debug.Print(DateTime.Now.ToLongTimeString());
             //timer.Change
 
         }
 
-        private void MainForm_FormClosed(object sender, FormClosedEventArgs e)
-        {
-            this.notifyIcon1.Visible = false;
-        }
+        
 
-
-
-        private void txt_WebTitle_TextChanged(object sender, EventArgs e)
-        {
-            //File.Create("webTitle.txt").Close();
-            //File.WriteAllText("webTitle.txt", textBox1.Text.Trim());
-            ConfigHelper.AddAppSetting("WebTitle", textBox1.Text.Trim());
-            webTitle = textBox1.Text.Trim();
-
-        }
-
-        private void cb_Startup_CheckedChanged(object sender, EventArgs e)
-        {
-            if (cb_Startup.Checked)
-            {
-                ShortcutManagement.CreateShort();
-            }
-            else
-            {
-                ShortcutManagement.DeleteShort();
-
-
-            }
-
-        }
     }
 }
