@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Threading;
 using System.Windows.Forms;
 
 namespace AndonWatchDog
@@ -9,6 +10,7 @@ namespace AndonWatchDog
 
         int interval = 1000 * 60 * 1;
         System.Threading.Timer timer;
+
         string webTitle = "百度一下，你就知道";
 
         public MainForm()
@@ -99,7 +101,12 @@ namespace AndonWatchDog
 
         private void stopToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            var result = timer.Change(int.MaxValue, int.MaxValue);
+
+            int.TryParse(ConfigHelper.GetAppSetting("IdleInterval"), out int tmpIdleInterval);
+
+            var result = timer.Change(1000 * 10, tmpIdleInterval * 60 * 1000);
+
+
             Debug.Print("stopToolStripMenuItem_Click:" + result.ToString());
 
             btn_Start.Enabled = true;
@@ -221,6 +228,48 @@ namespace AndonWatchDog
 
         private void timer_Callback(object state)
         {
+            //停止状态，
+            if (btn_Stop.Enabled == false && btn_Start.Enabled == true)
+            {
+                int.TryParse(ConfigHelper.GetAppSetting("IdleInterval"), out int tmpIdleInterval);
+                //检查是长时间无人操作
+                if (WinAPI.GetLastInputTime() > tmpIdleInterval * 60 * 1000)
+                {
+
+                    //长时间无人操作，自动开始
+                    if (btn_Start.InvokeRequired)
+                    {
+                        // 使用 Invoke 方法将操作委托给 UI 线程
+                        btn_Start.Invoke(new MethodInvoker(delegate
+                        {
+                            btn_Start.PerformClick();
+                            Thread.Sleep(3000);
+                            Logger.Info("btn_Start.PerformClick()");
+                        }));
+                    }
+                    else
+                    {
+                        // 如果当前线程是 UI 线程，则直接更新控件
+                        btn_Start.PerformClick();
+                        Logger.Info("btn_Start.PerformClick()");
+
+                    }
+                }
+                else
+                {
+                    Logger.Info("停止状态，有人一直在操作，不自动开始");
+                    return;
+                }
+
+            }
+
+
+
+
+
+
+
+
             //1、检查edge是否打开
             //2、打开edge浏览器设置全屏，设置网址
             //3、设置焦点
@@ -343,13 +392,13 @@ namespace AndonWatchDog
 
             Logger.Info($"鼠标点击 X:{X}  Y:{Y}");
             //toolStripStatusLabel1.Text = $"executed at {DateTime.Now.ToString("yyyy-MM--dd HH:mm:ss")}】";
-            
+
             Debug.Print(DateTime.Now.ToLongTimeString());
             //timer.Change
 
         }
 
-        
+
 
     }
 }
