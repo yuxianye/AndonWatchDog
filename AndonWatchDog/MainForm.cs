@@ -115,6 +115,15 @@ namespace AndonWatchDog
             this.stopToolStripMenuItem.Enabled = false;
             Logger.Info($"Stop");
 
+            var status = WinAPI.GetTaskbarState();
+            Logger.Info($"TaskbarState:{status.ToString()}");
+
+            if (status != WinAPI.AppBarStates.AlwaysOnTop)
+            {
+                WinAPI.SetTaskbarState(WinAPI.AppBarStates.AlwaysOnTop);
+                Logger.Info($"set TaskbarState:AlwaysOnTop");
+            }
+
         }
 
         private void startToolStripMenuItem_Click(object sender, EventArgs e)
@@ -128,13 +137,21 @@ namespace AndonWatchDog
             this.stopToolStripMenuItem.Enabled = true;
             Logger.Info($"Start");
 
+            var status = WinAPI.GetTaskbarState();
+            Logger.Info($"TaskbarState:{status.ToString()}");
+
+            if (status != WinAPI.AppBarStates.AutoHide)
+            {
+                WinAPI.SetTaskbarState(WinAPI.AppBarStates.AutoHide);
+                Logger.Info($"set TaskbarState:AutoHide");
+            }
         }
 
         private void showMainToolStripMenuItem_Click(object sender, EventArgs e)
         {
             //this.notifyIcon1.Visible = false;
             this.WindowState = FormWindowState.Normal;
-            this.Focus();
+            //this.Focus();
 
         }
 
@@ -185,6 +202,15 @@ namespace AndonWatchDog
             Logger.Info($"Timer start {interval}");
             //toolStripStatusLabel1.Text = "program start";
 
+            var status = WinAPI.GetTaskbarState();
+            Logger.Info($"TaskbarState:{status.ToString()}");
+
+            if (status != WinAPI.AppBarStates.AutoHide)
+            {
+                WinAPI.SetTaskbarState(WinAPI.AppBarStates.AutoHide);
+                Logger.Info($"SetTaskbarState:AutoHide");
+            }
+
         }
 
 
@@ -193,6 +219,15 @@ namespace AndonWatchDog
             this.notifyIcon1.Visible = false;
             Logger.Info($"Main Form Closed");
 
+
+            var status = WinAPI.GetTaskbarState();
+            Logger.Info($"TaskbarState:{status.ToString()}");
+
+            if (status != WinAPI.AppBarStates.AlwaysOnTop)
+            {
+                WinAPI.SetTaskbarState(WinAPI.AppBarStates.AlwaysOnTop);
+                Logger.Info($"set TaskbarState:AlwaysOnTop");
+            }
         }
 
 
@@ -279,6 +314,7 @@ namespace AndonWatchDog
             //var edgeProcess = Process.GetProcessesByName("msedge");
             bool isSet = WinAPI.SetPageGetFocusByTitle(webTitle);
 
+            Logger.Info($"SetPageGetFocusByTitle:{isSet}");
 
             if (!isSet)
             {
