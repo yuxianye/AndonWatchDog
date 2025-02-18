@@ -2,7 +2,7 @@
 using System.Diagnostics;
 using System.Threading;
 using System.Windows.Forms;
-
+using Microsoft.VisualBasic;
 namespace AndonWatchDog
 {
     public partial class MainForm : Form
@@ -431,7 +431,8 @@ namespace AndonWatchDog
 
             Debug.Print(DateTime.Now.ToLongTimeString());
             //timer.Change
-
+            SendKeys.SendWait("^{F5}");
+            Logger.Info("Ctrl+F5 has been sent.");
         }
 
 
