@@ -422,24 +422,81 @@ namespace AndonWatchDog
 
 
 
+
+
+
+
+        [DllImport("user32.dll")]
+        static extern int SendMessage(IntPtr hWnd, uint wMsg, int wParam, int lParam);
+
+        [DllImport("user32.dll")]
+        static extern bool SetPowerRequirement(IntPtr hWnd, byte bRequirement, int Timeout);
+
+        //const uint WM_SYSCOMMAND = 0x0112;
+        //const int SC_MONITORPOWER = 0xF175;
+
+
+        public const int MONITOR_ON = -1;
+        public const int MONITOR_OFF = 2;
+        public static void SetBrightness(int brightness)
+        {
+            IntPtr hWnd = new IntPtr(0xFFFF); // 用一个特殊的窗口句柄代表整个系统
+            SendMessage(hWnd, WM_SYSCOMMAND, SC_MONITORPOWER, brightness);
+        }
+
+        //关屏       
+        [DllImport("user32.dll", CharSet = CharSet.Auto)]
+        public static extern IntPtr SendMessage(IntPtr hWnd, UInt32 Msg, IntPtr wParam, IntPtr lParam);
+        //锁屏       
+        [DllImport("user32.dll")]
+        public static extern bool LockWorkStation();
+
+
+        // 唤醒屏幕
+        //SetBrightness(MONITOR_ON);
+        //锁屏+关屏    
+        // LockWorkStation();
+        //  SendMessage(this.Handle, (uint)0x0112, (IntPtr)0xF170, (IntPtr)2);
+
+
+
+
+
+
+        //MouseHelper.SetCursorPos(Form1.point.X, Form1.point.Y);
+        //MouseHelper.mouse_event(MouseHelper.MOUSEEVENTF_LEFTDOWN, 0, 0, 0, 0);
+        //MouseHelper.mouse_event(MouseHelper.MOUSEEVENTF_LEFTUP, 0, 0, 0, 0);
+
+
+
+
+
+        [DllImport("user32.dll")]
+        public static extern int SendMessage(IntPtr hWnd, uint Msg, uint wParam, int lParam);
+        private static readonly IntPtr HWND_BROADCAST = new IntPtr(0xffff);
+        private const uint WM_SYSCOMMAND = 0x0112;
+        private const uint SC_MONITORPOWER = 0xf170;
+
+        //打开显示器
+        public static void TurnOn()
+        {
+            SendMessage(HWND_BROADCAST, WM_SYSCOMMAND, SC_MONITORPOWER, -1);
+        }
+        //关闭显示器
+        public static void TurnOff()
+        {
+            SendMessage(HWND_BROADCAST, WM_SYSCOMMAND, SC_MONITORPOWER, 2);
+
+
+
+
+
+
+
+
+
+        }
+
     }
-
-
-    //MouseHelper.SetCursorPos(Form1.point.X, Form1.point.Y);
-    //MouseHelper.mouse_event(MouseHelper.MOUSEEVENTF_LEFTDOWN, 0, 0, 0, 0);
-    //MouseHelper.mouse_event(MouseHelper.MOUSEEVENTF_LEFTUP, 0, 0, 0, 0);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 }
+

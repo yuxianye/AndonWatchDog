@@ -1,8 +1,13 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Linq;
+using System.Linq.Expressions;
+using System.Runtime.InteropServices;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 using Microsoft.VisualBasic;
+//using Quartz;
 namespace AndonWatchDog
 {
     public partial class MainForm : Form
@@ -12,6 +17,13 @@ namespace AndonWatchDog
         System.Threading.Timer timer;
 
         string webTitle = "百度一下，你就知道";
+        bool isRefresh = false;
+        bool isMoniterOn = true;
+
+        //创建调度单元
+        //Task<IScheduler> tsk = Quartz.Impl.StdSchedulerFactory.GetDefaultScheduler();
+        //IScheduler scheduler;
+
 
         public MainForm()
         {
@@ -211,6 +223,45 @@ namespace AndonWatchDog
                 Logger.Info($"SetTaskbarState:AutoHide");
             }
 
+            //WinAPI.SendMessage(this.Handle, (uint)0x0112, (IntPtr)0xF170, (IntPtr)2);
+
+
+            //SetBrightness(MONITOR_ON);
+            //scheduler = tsk.Result;
+            ////创建具体的作业，具体的job需要单独在一个执行文件中执行
+            //IJobDetail Job = JobBuilder.Create<RefreshJob>().WithIdentity("yuxianye").Build();
+            ////IJobDetail Job2 = JobBuilder.Create<TestJob>().WithIdentity("奇偶比JOB2").Build();
+            ////创建并配置一个触发器
+            //ITrigger _ctroTrigger = TriggerBuilder.Create().
+            //    WithIdentity("yuxianye")
+            //    .WithCronSchedule(ConfigHelper.GetAppSetting("RefreshCron")) //"0 0 9 * * ?"
+            //    .StartNow().Build() as ITrigger;
+            ////将job和trigger加入到作业调度中
+            //scheduler.ScheduleJob(Job, _ctroTrigger);
+
+
+
+            //IJobDetail moniterPowerOffJob = JobBuilder.Create<MoniterPowerOffJob>().WithIdentity("MoniterPowerOffJob").Build();
+
+            //ITrigger moniterPowerOffJobTrigger = TriggerBuilder.Create().
+            //   WithIdentity("MoniterPowerOffJob")
+            //   .WithCronSchedule(ConfigHelper.GetAppSetting("MoniterPowerOffCron")) //"0 0 9 * * ?"
+            //   .StartNow().Build() as ITrigger;
+            //scheduler.ScheduleJob(moniterPowerOffJob, moniterPowerOffJobTrigger);
+
+            //IJobDetail moniterPowerOnJob = JobBuilder.Create<MoniterPowerOnJob>().WithIdentity("MoniterPowerOnJob").Build();
+
+            //ITrigger moniterPowerOnJobTrigger = TriggerBuilder.Create().
+            //   WithIdentity("MoniterPowerOnJob")
+            //   .WithCronSchedule(ConfigHelper.GetAppSetting("MoniterPowerOnCron")) //"0 0 9 * * ?"
+            //   .StartNow().Build() as ITrigger;
+            //scheduler.ScheduleJob(moniterPowerOnJob, moniterPowerOnJobTrigger);
+
+
+
+            //开启调度
+            //scheduler.Start();
+
         }
 
 
@@ -292,7 +343,7 @@ namespace AndonWatchDog
                 }
                 else
                 {
-                    Logger.Info("停止状态，有人一直在操作，不自动开始");
+                    Logger.Info("status is stop ，not auto start ");
                     return;
                 }
 
@@ -431,9 +482,162 @@ namespace AndonWatchDog
 
             Debug.Print(DateTime.Now.ToLongTimeString());
             //timer.Change
-            SendKeys.SendWait("^{F5}");
-            Logger.Info("Ctrl+F5 has been sent.");
+
+            int hour = DateTime.Now.Hour % 4;
+            Logger.Info($"hour{hour}");
+
+
+            //0/4/8/12/16/20 refresh
+            if (isRefresh == false && DateTime.Now.Hour % 4 == 0 && DateTime.Now.Minute < nud_interval.Value)
+            {
+                SendKeys.SendWait("^{F5}");
+                Logger.Info("Ctrl+F5 has been sent.");
+                isRefresh = true;
+            }
+            else
+            {
+
+                isRefresh = false;
+
+            }
+
+            //0/4/8/12/16/20  moniter power off
+            //if (ConfigHelper.GetAppSetting("MoniterPowerOff").Split(',').AsQueryable().Select(a => a == DateTime.Now.Hour.ToString()).Any() && DateTime.Now.Minute < nud_interval.Value)
+            //{
+            //    WinAPI.TurnOff();
+            //    Logger.Info("TurnOff");
+
+            //    //WinAPI.SendMessage(this.Handle, (uint)0x0112, (IntPtr)0xF170, (IntPtr)2);
+            //}
+            //else
+            //{
+
+            //    //isRefresh = false;
+
+            //}
+
+
+            //打开
+            string open = "08:00:00";
+            //关闭
+            string close = "19:10:00";
+
+            DateTime now = DateTime.Now;
+
+            string format1 = now.ToString("HH:mm:ss");
+            Console.WriteLine(format1); // 输出类似 "2023-04-05 13:45:30"
+            if (isMoniterOn)
+            {
+                //锁屏+关屏    
+                //LockWorkStation();
+                //SendMessage(this.Handle, (uint)0x0112, (IntPtr)0xF170, (IntPtr)2);
+                // MessageBox.Show("打开"+ format1);
+                //isMoniterOn = false;
+                //Logger.Info($"isMoniterOn:{isMoniterOn}");
+
+                if (this.InvokeRequired)
+                {
+                    // 使用 Invoke 方法将操作委托给 UI 线程
+                    this.Invoke(new MethodInvoker(delegate
+                    {
+                        SendMessage(this.Handle, (uint)0x0112, (IntPtr)0xF170, (IntPtr)2);
+                        //SendMessage(IntPtr.Zero, (uint)0x0112, (IntPtr)0xF170, (IntPtr)2);
+                        // MessageBox.Show("打开"+ format1);
+                        isMoniterOn = false;
+                        Logger.Info($"set off, isMoniterOn:{isMoniterOn}");
+                    }));
+                }
+                else
+                {
+                    SendMessage(this.Handle, (uint)0x0112, (IntPtr)0xF170, (IntPtr)2);
+                    //SendMessage(IntPtr.Zero, (uint)0x0112, (IntPtr)0xF170, (IntPtr)2);
+                    // MessageBox.Show("打开"+ format1);
+                    isMoniterOn = false;
+                    Logger.Info($"isMoniterOn:{isMoniterOn}");
+
+                }
+
+
+
+            }
+            else
+            //if (format1.Equals(open))
+            {
+                int i = 0;
+                while (i < 12)
+                {
+                    i++;
+                    SetBrightness(MONITOR_ON);
+
+                    SendMessage(IntPtr.Zero, (uint)0x0112, 0xF170, -1);
+
+                    //WinAPI.SetCursorPos(X, Y);
+
+                    //WinAPI.mouse_event(WinAPI.MOUSEEVENTF_LEFTDOWN, x * 65536 / 1024, (i % 17) * 65536 / 768, 0, 0);
+                    //WinAPI.mouse_event(WinAPI.MOUSEEVENTF_LEFTUP, (i % 7) * 65536 / 1024, (i % 17) * 65536 / 768, 0, 0);
+                    WinAPI.mouse_event(WinAPI.MOUSEEVENTF_ABSOLUTE | WinAPI.MOUSEEVENTF_MOVE, X, Y, 0, 0);
+
+                    SendKeys.SendWait("^{F5}");
+
+                    //WinAPI.mouse_event(WinAPI.MOUSEEVENTF_LEFTDOWN, 0, 0, 0, 0);
+                    //WinAPI.mouse_event(WinAPI.MOUSEEVENTF_LEFTUP, 0, 0, 0, 0);
+
+
+
+                    isMoniterOn = true;
+
+                }
+                Logger.Info($"SetBrightness,isMoniterOn:{isMoniterOn}");
+
+
+            }
         }
+
+
+
+
+
+
+
+
+
+
+
+
+        [DllImport("user32.dll")]
+        static extern int SendMessage(IntPtr hWnd, uint wMsg, int wParam, int lParam);
+
+        [DllImport("user32.dll")]
+        static extern bool SetPowerRequirement(IntPtr hWnd, byte bRequirement, int Timeout);
+
+        const uint WM_SYSCOMMAND = 0x0112;
+        const int SC_MONITORPOWER = 0xF175;
+
+
+        const int MONITOR_ON = -1;
+        const int MONITOR_OFF = 2;
+        public static void SetBrightness(int brightness)
+        {
+            IntPtr hWnd = new IntPtr(0xFFFF); // 用一个特殊的窗口句柄代表整个系统
+            SendMessage(hWnd, WM_SYSCOMMAND, SC_MONITORPOWER, brightness);
+        }
+
+        //关屏       
+        [DllImport("user32.dll", CharSet = CharSet.Auto)]
+        static extern IntPtr SendMessage(IntPtr hWnd, UInt32 Msg, IntPtr wParam, IntPtr lParam);
+        //锁屏       
+        [DllImport("user32.dll")]
+        public static extern bool LockWorkStation();
+
+
+
+
+
+
+
+
+
+
 
 
 
