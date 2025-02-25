@@ -33,6 +33,8 @@ namespace AndonWatchDog
         /// <returns>string类型的配置内容</returns>
         public static string GetAppSetting(string key)
         {
+            ConfigurationManager.RefreshSection(@"appSettings");// 刷新命名节，在下次检索它时将从磁盘重新读取它。记住应用程序要刷新节点
+
             return ConfigurationManager.AppSettings[key]?.ToString();
             //return ConfigurationManager.AppSettings.Get(key);
         }

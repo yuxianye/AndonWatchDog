@@ -223,6 +223,7 @@ namespace AndonWatchDog
                 Logger.Info($"SetTaskbarState:AutoHide");
             }
 
+
             //WinAPI.SendMessage(this.Handle, (uint)0x0112, (IntPtr)0xF170, (IntPtr)2);
 
 
@@ -314,6 +315,7 @@ namespace AndonWatchDog
 
         private void timer_Callback(object state)
         {
+
             //停止状态，
             if (btn_Stop.Enabled == false && btn_Start.Enabled == true)
             {
@@ -349,11 +351,39 @@ namespace AndonWatchDog
 
             }
 
+            /////////////////////////////////////////////////////////////
 
 
+            int.TryParse(ConfigHelper.GetAppSetting("MoniterPowerOff"), out int offHour);
+            int.TryParse(ConfigHelper.GetAppSetting("MoniterPowerOn"), out int onHour);
+            Logger.Info($"MoniterPowerOff:{offHour} MoniterPowerOn{onHour}");
+
+            if (DateTime.Now.Hour >= offHour && DateTime.Now.Hour < onHour)
+            {
+                // 启动屏幕保护程序，但不锁定工作站
+                //bool r = SystemParametersInfo(0x0021, 0, "scrnsave.scr", 0);
+                StartScreenSaver();
+
+                // 使用SystemParametersInfo来启动屏保，这里的"scrnsave.scr"应为完整路径或确保系统能找到的路径名。
+                //Logger.Info($"screen save :{r}");
+                Logger.Info($"screen save ");
+
+                //isMoniterOn = false;
+                return;
+            }
+            else
+            {
+
+                WinAPI.mouse_event(WinAPI.MOUSEEVENTF_LEFTDOWN, 0, 0, 0, 0);
+                WinAPI.mouse_event(WinAPI.MOUSEEVENTF_LEFTUP, 0, 0, 0, 0);
+                Logger.Info("mouse move for screen wakeup");
+
+                //isMoniterOn = true;
+
+            }
 
 
-
+            //////////////////////////////////////////////////
 
 
             //1、检查edge是否打开
@@ -501,6 +531,12 @@ namespace AndonWatchDog
 
             }
 
+
+
+            //////////////////////////////////////
+            ///
+
+
             //0/4/8/12/16/20  moniter power off
             //if (ConfigHelper.GetAppSetting("MoniterPowerOff").Split(',').AsQueryable().Select(a => a == DateTime.Now.Hour.ToString()).Any() && DateTime.Now.Minute < nud_interval.Value)
             //{
@@ -516,81 +552,100 @@ namespace AndonWatchDog
 
             //}
 
+            //// 防止系统进入休眠状态
+            //SystemSleepManagement.PreventSleep();
+            //Logger.Info("防止系统进入休眠状态");
 
-            //打开
-            string open = "08:00:00";
-            //关闭
-            string close = "19:10:00";
-
-            DateTime now = DateTime.Now;
-
-            string format1 = now.ToString("HH:mm:ss");
-            Console.WriteLine(format1); // 输出类似 "2023-04-05 13:45:30"
-            if (isMoniterOn)
-            {
-                //锁屏+关屏    
-                //LockWorkStation();
-                //SendMessage(this.Handle, (uint)0x0112, (IntPtr)0xF170, (IntPtr)2);
-                // MessageBox.Show("打开"+ format1);
-                //isMoniterOn = false;
-                //Logger.Info($"isMoniterOn:{isMoniterOn}");
-
-                if (this.InvokeRequired)
-                {
-                    // 使用 Invoke 方法将操作委托给 UI 线程
-                    this.Invoke(new MethodInvoker(delegate
-                    {
-                        SendMessage(this.Handle, (uint)0x0112, (IntPtr)0xF170, (IntPtr)2);
-                        //SendMessage(IntPtr.Zero, (uint)0x0112, (IntPtr)0xF170, (IntPtr)2);
-                        // MessageBox.Show("打开"+ format1);
-                        isMoniterOn = false;
-                        Logger.Info($"set off, isMoniterOn:{isMoniterOn}");
-                    }));
-                }
-                else
-                {
-                    SendMessage(this.Handle, (uint)0x0112, (IntPtr)0xF170, (IntPtr)2);
-                    //SendMessage(IntPtr.Zero, (uint)0x0112, (IntPtr)0xF170, (IntPtr)2);
-                    // MessageBox.Show("打开"+ format1);
-                    isMoniterOn = false;
-                    Logger.Info($"isMoniterOn:{isMoniterOn}");
-
-                }
+            //Logger.Info("start 关闭显示器");
+            //// 关闭显示器
+            ////DisplayControl.TurnOffDisplay();
+            //DisplayControl.TurnLowDisplay();
+            //Logger.Info("显示器已关闭");
+            // 模拟一些操作
+            //System.Threading.Thread.Sleep(50000);
+            //// 打开显示器
+            //DisplayControl.TurnOnDisplay();
+            //Logger.Info("显示器已开启");
+            //// 恢复系统休眠策略
+            //SystemSleepManagement.RestoreSleep();
 
 
 
-            }
-            else
-            //if (format1.Equals(open))
-            {
-                int i = 0;
-                while (i < 12)
-                {
-                    i++;
-                    SetBrightness(MONITOR_ON);
 
-                    SendMessage(IntPtr.Zero, (uint)0x0112, 0xF170, -1);
+            ////打开
+            //string open = "08:00:00";
+            ////关闭
+            //string close = "19:10:00";
 
-                    //WinAPI.SetCursorPos(X, Y);
+            //DateTime now = DateTime.Now;
 
-                    //WinAPI.mouse_event(WinAPI.MOUSEEVENTF_LEFTDOWN, x * 65536 / 1024, (i % 17) * 65536 / 768, 0, 0);
-                    //WinAPI.mouse_event(WinAPI.MOUSEEVENTF_LEFTUP, (i % 7) * 65536 / 1024, (i % 17) * 65536 / 768, 0, 0);
-                    WinAPI.mouse_event(WinAPI.MOUSEEVENTF_ABSOLUTE | WinAPI.MOUSEEVENTF_MOVE, X, Y, 0, 0);
+            //string format1 = now.ToString("HH:mm:ss");
+            //Console.WriteLine(format1); // 输出类似 "2023-04-05 13:45:30"
+            //if (isMoniterOn)
+            //{
+            //    //锁屏+关屏    
+            //    //LockWorkStation();
+            //    //SendMessage(this.Handle, (uint)0x0112, (IntPtr)0xF170, (IntPtr)2);
+            //    // MessageBox.Show("打开"+ format1);
+            //    //isMoniterOn = false;
+            //    //Logger.Info($"isMoniterOn:{isMoniterOn}");
 
-                    SendKeys.SendWait("^{F5}");
+            //    if (this.InvokeRequired)
+            //    {
+            //        // 使用 Invoke 方法将操作委托给 UI 线程
+            //        this.Invoke(new MethodInvoker(delegate
+            //        {
+            //            SendMessage(this.Handle, (uint)0x0112, (IntPtr)0xF170, (IntPtr)2);
+            //            //SendMessage(IntPtr.Zero, (uint)0x0112, (IntPtr)0xF170, (IntPtr)2);
+            //            // MessageBox.Show("打开"+ format1);
+            //            isMoniterOn = false;
+            //            Logger.Info($"set off, isMoniterOn:{isMoniterOn}");
+            //        }));
+            //    }
+            //    else
+            //    {
+            //        SendMessage(this.Handle, (uint)0x0112, (IntPtr)0xF170, (IntPtr)2);
+            //        //SendMessage(IntPtr.Zero, (uint)0x0112, (IntPtr)0xF170, (IntPtr)2);
+            //        // MessageBox.Show("打开"+ format1);
+            //        isMoniterOn = false;
+            //        Logger.Info($"isMoniterOn:{isMoniterOn}");
 
-                    //WinAPI.mouse_event(WinAPI.MOUSEEVENTF_LEFTDOWN, 0, 0, 0, 0);
-                    //WinAPI.mouse_event(WinAPI.MOUSEEVENTF_LEFTUP, 0, 0, 0, 0);
+            //    }
 
 
 
-                    isMoniterOn = true;
+            //}
+            //else
+            ////if (format1.Equals(open))
+            //{
+            //    int i = 0;
+            //    while (i < 12)
+            //    {
+            //        i++;
+            //        SetBrightness(MONITOR_ON);
 
-                }
-                Logger.Info($"SetBrightness,isMoniterOn:{isMoniterOn}");
+            //        SendMessage(IntPtr.Zero, (uint)0x0112, 0xF170, -1);
+
+            //        //WinAPI.SetCursorPos(X, Y);
+
+            //        //WinAPI.mouse_event(WinAPI.MOUSEEVENTF_LEFTDOWN, x * 65536 / 1024, (i % 17) * 65536 / 768, 0, 0);
+            //        //WinAPI.mouse_event(WinAPI.MOUSEEVENTF_LEFTUP, (i % 7) * 65536 / 1024, (i % 17) * 65536 / 768, 0, 0);
+            //        WinAPI.mouse_event(WinAPI.MOUSEEVENTF_ABSOLUTE | WinAPI.MOUSEEVENTF_MOVE, X, Y, 0, 0);
+
+            //        SendKeys.SendWait("^{F5}");
+
+            //        //WinAPI.mouse_event(WinAPI.MOUSEEVENTF_LEFTDOWN, 0, 0, 0, 0);
+            //        //WinAPI.mouse_event(WinAPI.MOUSEEVENTF_LEFTUP, 0, 0, 0, 0);
 
 
-            }
+
+            //        isMoniterOn = true;
+
+            //    }
+            //    Logger.Info($"SetBrightness,isMoniterOn:{isMoniterOn}");
+
+
+            //}
         }
 
 
@@ -600,6 +655,8 @@ namespace AndonWatchDog
 
 
 
+        [DllImport("user32.dll", CharSet = CharSet.Auto)]
+        private static extern bool SystemParametersInfo(uint action, uint uParam, string vParam, uint winIni);
 
 
 
@@ -632,8 +689,33 @@ namespace AndonWatchDog
 
 
 
+        // 屏幕保护程序的路径
+        private const string ScreenSaverPath = @"C:\Windows\System32\scrnsave.scr";
 
+        // 启动屏幕保护程序
+        public static void StartScreenSaver()
+        {
+            try
+            {
+                // 创建一个新的进程启动信息
+                ProcessStartInfo startInfo = new ProcessStartInfo
+                {
+                    FileName = ScreenSaverPath,
+                    Arguments = "/s" // /s 参数表示启动屏幕保护程序
+                };
 
+                // 创建并启动进程
+                using (Process process = new Process())
+                {
+                    process.StartInfo = startInfo;
+                    process.Start();
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"启动屏幕保护程序时出错: {ex.Message}");
+            }
+        }
 
 
 
