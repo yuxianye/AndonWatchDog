@@ -125,6 +125,8 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Images\legato_logo.jpg" />
+    <None Include="Images\LOGO.png" />
     <Content Include="WatchDog-28.ico" />
   </ItemGroup>
   <ItemGroup>
@@ -150,5 +152,6 @@
       <Install>false</Install>
     </BootstrapperPackage>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -13,12 +13,113 @@ namespace AndonWatchDog
     public partial class MainForm : Form
     {
 
-        int interval = 1000 * 60 * 1;
+
+        //int interval = 1000 * 60 * 1;
+
+        /// <summary>
+        /// 默认5分钟
+        /// </summary>
+        public int Interval
+        {
+            get
+            {
+                int interval = 5 * 60 * 1000;
+                try
+                {
+                    int.TryParse(AndonWatchDog.ConfigHelper.GetAppSetting("Interval"), out interval);
+
+                    if (interval < 1 || interval > 60)
+                    {
+                        AndonWatchDog.ConfigHelper.AddAppSetting("Interval", "5");
+                        Logger.Warn("Interval must between 5-60，set default 5");
+                        interval = 5;
+                    }
+
+
+                    return 1000 * 60 * interval;
+
+                }
+                catch
+                {
+                    return 1000 * 60 * 5;
+                }
+
+
+            }
+
+        }
+
+        /// <summary>
+        /// 默认7
+        /// </summary>
+        public int MonitorPowerOn
+        {
+            get
+            {
+                int tmp = 7;
+                try
+                {
+                    int.TryParse(AndonWatchDog.ConfigHelper.GetAppSetting("MonitorPowerOn"), out tmp);
+
+                    if (tmp < 0 || tmp > 24)
+                    {
+                        AndonWatchDog.ConfigHelper.AddAppSetting("MonitorPowerOn", "7");
+                        Logger.Warn("MonitorPowerOn must between 0-24，set default 7");
+                        tmp = 7;
+                    }
+
+                    return tmp;
+
+                }
+                catch
+                {
+                    return tmp;
+                }
+
+
+            }
+
+        }
+
+        /// <summary>
+        /// 默认19
+        /// </summary>
+        public int MonitorPowerOff
+        {
+            get
+            {
+                int tmp = 7;
+                try
+                {
+                    int.TryParse(AndonWatchDog.ConfigHelper.GetAppSetting("MonitorPowerOff"), out tmp);
+                    if (tmp < 0 || tmp > 24)
+                    {
+                        AndonWatchDog.ConfigHelper.AddAppSetting("MonitorPowerOff", "19");
+                        Logger.Warn("MonitorPowerOff must between 0-24，set default 19");
+                        tmp = 19;
+                    }
+                    return tmp;
+
+
+                }
+                catch
+                {
+                    return tmp;
+                }
+
+
+            }
+
+        }
+
+
+
+
         System.Threading.Timer timer;
 
-        string webTitle = "百度一下，你就知道";
+        //string webTitle = "百度一下，你就知道";
         bool isRefresh = false;
-        bool isMoniterOn = true;
+        //bool isMoniterOn = true;
 
         //创建调度单元
         //Task<IScheduler> tsk = Quartz.Impl.StdSchedulerFactory.GetDefaultScheduler();
@@ -31,11 +132,12 @@ namespace AndonWatchDog
             try
             {
                 int.TryParse(AndonWatchDog.ConfigHelper.GetAppSetting("Interval"), out int tmpInterval);
-                interval = 1000 * 60 * tmpInterval;
+                //interval = 1000 * 60 * tmpInterval;
                 nud_interval.Value = tmpInterval;
 
+
                 textBox1.Text = ConfigHelper.GetAppSetting("WebTitle");
-                webTitle = textBox1.Text;
+                //webTitle = textBox1.Text;
 
                 var autoStartup = ConfigHelper.GetAppSetting("AutoStartup").ToLower();
                 if (autoStartup == "true")
@@ -47,9 +149,24 @@ namespace AndonWatchDog
                     cb_Startup.Checked = false;
                 }
 
+
+                int.TryParse(AndonWatchDog.ConfigHelper.GetAppSetting("MoniterPowerOn"), out int tmpOn);
+                nudMonitorOn.Value = tmpOn;
+
+                int.TryParse(AndonWatchDog.ConfigHelper.GetAppSetting("MoniterPowerOff"), out int tmpOff);
+                nudMonitorOff.Value = tmpOff;
+
+
+
+
                 Logger.Info($"Interval:{tmpInterval}");
                 Logger.Info($"WebTitle:{textBox1.Text}");
                 Logger.Info($"AutoStartup:{autoStartup}");
+
+
+
+
+
 
             }
             catch (Exception ex)
@@ -128,7 +245,7 @@ namespace AndonWatchDog
             Logger.Info($"Stop");
 
             var status = WinAPI.GetTaskbarState();
-            Logger.Info($"TaskbarState:{status.ToString()}");
+            Logger.Info($"current TaskbarState:{status.ToString()},0:autohide,1:AlwaysOnTop");
 
             if (status != WinAPI.AppBarStates.AlwaysOnTop)
             {
@@ -140,7 +257,7 @@ namespace AndonWatchDog
 
         private void startToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            var result = timer.Change(interval, interval);
+            var result = timer.Change(Interval, Interval);
             Debug.Print("startToolStripMenuItem_Click:" + result.ToString());
 
             btn_Start.Enabled = false;
@@ -191,27 +308,28 @@ namespace AndonWatchDog
 
         private void nud_interval_ValueChanged(object sender, EventArgs e)
         {
-            this.interval = (int)nud_interval.Value * 1000 * 60;
+            //this.interval = (int)nud_interval.Value * 1000 * 60;
 
             //File.WriteAllText("interval.txt", ((int)nud_interval.Value).ToString());
 
             ConfigHelper.AddAppSetting("Interval", ((int)nud_interval.Value).ToString());
 
+            //运行状态
             if (btn_Stop.Enabled == true && btn_Start.Enabled == false)
             {
-                var result = timer?.Change(interval, interval);
+                var result = timer?.Change(Interval, Interval);
                 Debug.Print("nud_interval_ValueChanged:" + result.ToString());
 
             }
-            Logger.Info($"interval changed to {interval}");
+            Logger.Info($"interval changed to {nud_interval.Value} minute");
 
         }
 
         private void MainForm_Load(object sender, EventArgs e)
         {
-            timer = new System.Threading.Timer(timer_Callback, null, interval, interval);
+            timer = new System.Threading.Timer(timer_Callback, null, Interval, Interval);
             this.WindowState = FormWindowState.Minimized;
-            Logger.Info($"Timer start {interval}");
+            Logger.Info($"Timer start,Interval: {Interval}");
             //toolStripStatusLabel1.Text = "program start";
 
             var status = WinAPI.GetTaskbarState();
@@ -288,9 +406,9 @@ namespace AndonWatchDog
         {
             //File.Create("webTitle.txt").Close();
             //File.WriteAllText("webTitle.txt", textBox1.Text.Trim());
-            ConfigHelper.AddAppSetting("WebTitle", textBox1.Text.Trim());
-            webTitle = textBox1.Text.Trim();
-            Logger.Info($"Web Title Text Changed to {textBox1.Text.Trim()}");
+            ConfigHelper.AddAppSetting("WebTitle", textBox1.Text);
+            //webTitle = textBox1.Text.Trim();
+            Logger.Info($"Web Title Text Changed to {{textBox1.Text}}");
 
 
         }
@@ -356,7 +474,7 @@ namespace AndonWatchDog
 
             int.TryParse(ConfigHelper.GetAppSetting("MoniterPowerOff"), out int offHour);
             int.TryParse(ConfigHelper.GetAppSetting("MoniterPowerOn"), out int onHour);
-            Logger.Info($"MoniterPowerOff:{offHour} MoniterPowerOn{onHour}");
+            //Logger.Info($"MoniterPowerOff:{offHour} MoniterPowerOn{onHour}");
 
             if (DateTime.Now.Hour >= offHour && DateTime.Now.Hour < onHour)
             {
@@ -366,7 +484,7 @@ namespace AndonWatchDog
 
                 // 使用SystemParametersInfo来启动屏保，这里的"scrnsave.scr"应为完整路径或确保系统能找到的路径名。
                 //Logger.Info($"screen save :{r}");
-                Logger.Info($"screen save ");
+                Logger.Info($"screen save start");
 
                 //isMoniterOn = false;
                 return;
@@ -393,22 +511,22 @@ namespace AndonWatchDog
 
 
             //var edgeProcess = Process.GetProcessesByName("msedge");
-            bool isSet = WinAPI.SetPageGetFocusByTitle(webTitle);
+            bool isSet = WinAPI.SetPageGetFocusByTitle(textBox1.Text);
 
             Logger.Info($"SetPageGetFocusByTitle:{isSet}");
 
             if (!isSet)
             {
-                Logger.Info($"没找到【{webTitle}】");
+                Logger.Info($"not find 【{textBox1.Text}】");
                 //toolStripStatusLabel1.Text = $"没找到【{webTitle}】";
 
                 var url = ConfigHelper.GetAppSetting("AutoOpenUrl");
                 url = string.Format(url, DomainHelper.GetFullMachineName());
                 Debug.Print("url:" + url);
-                Logger.Info($"启动新Edge, {url}");
+                Logger.Info($"start new Edge, {url}");
 
                 EdgeHelper.StartFullScreenEdge(url);
-                Logger.Info($"新Edge启动完成");
+                Logger.Info($"Edge started");
 
             }
 
@@ -507,18 +625,18 @@ namespace AndonWatchDog
             WinAPI.mouse_event(WinAPI.MOUSEEVENTF_LEFTDOWN, 0, 0, 0, 0);
             WinAPI.mouse_event(WinAPI.MOUSEEVENTF_LEFTUP, 0, 0, 0, 0);
 
-            Logger.Info($"鼠标点击 X:{X}  Y:{Y}");
+            Logger.Info($"mouse click  X:{X}  Y:{Y}");
             //toolStripStatusLabel1.Text = $"executed at {DateTime.Now.ToString("yyyy-MM--dd HH:mm:ss")}】";
 
             Debug.Print(DateTime.Now.ToLongTimeString());
             //timer.Change
 
-            int hour = DateTime.Now.Hour % 4;
-            Logger.Info($"hour{hour}");
-
+            //int hour = DateTime.Now.Hour % 4;
+            //Logger.Info($"hour:{hour}");
+            int.TryParse(ConfigHelper.GetAppSetting("RefreshInterval"), out int hour);
 
             //0/4/8/12/16/20 refresh
-            if (isRefresh == false && DateTime.Now.Hour % 4 == 0 && DateTime.Now.Minute < nud_interval.Value)
+            if (isRefresh == false && DateTime.Now.Hour % hour == 0 && DateTime.Now.Minute < nud_interval.Value)
             {
                 SendKeys.SendWait("^{F5}");
                 Logger.Info("Ctrl+F5 has been sent.");
@@ -717,11 +835,19 @@ namespace AndonWatchDog
             }
         }
 
+        private void nudMonitorOn_ValueChanged(object sender, EventArgs e)
+        {
+            ConfigHelper.AddAppSetting("MoniterPowerOn", ((int)nudMonitorOn.Value).ToString());
 
+            Logger.Info($"MoniterPowerOn changed at {nudMonitorOn.Value} clock");
 
+        }
 
+        private void nudMonitorOff_ValueChanged(object sender, EventArgs e)
+        {
+            ConfigHelper.AddAppSetting("MoniterPowerOff", ((int)nudMonitorOff.Value).ToString());
 
-
-
+            Logger.Info($"MoniterPowerOff changed at {nudMonitorOff.Value} clock");
+        }
     }
 }
