@@ -4,8 +4,8 @@ namespace AndonWatchDog
 {
     public class ConfigHelper
     {
-        private static readonly System.Configuration.Configuration config =
-           ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
+        //private static readonly System.Configuration.Configuration config =
+        //   ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
 
         /// <summary>
         /// 增加AppSetting配置节的配置内容，如果存在同名key,则覆盖
@@ -14,6 +14,10 @@ namespace AndonWatchDog
         /// <param name="value"></param>
         public static void AddAppSetting(string key, string value)
         {
+
+            System.Configuration.Configuration config =
+         ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
+
             if (config.AppSettings.Settings[key] == null)
             {
                 config.AppSettings.Settings.Add(key, value);

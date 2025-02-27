@@ -132,7 +132,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(30, 122);
+            this.label1.Location = new System.Drawing.Point(31, 122);
             this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(188, 18);
@@ -220,7 +220,7 @@
             // 
             // nudMonitorOff
             // 
-            this.nudMonitorOff.Location = new System.Drawing.Point(227, 205);
+            this.nudMonitorOff.Location = new System.Drawing.Point(227, 204);
             this.nudMonitorOff.Margin = new System.Windows.Forms.Padding(4);
             this.nudMonitorOff.Maximum = new decimal(new int[] {
             23,
@@ -241,9 +241,9 @@
             // pictureBox1
             // 
             this.pictureBox1.Image = global::AndonWatchDog.Properties.Resources.LOGO;
-            this.pictureBox1.Location = new System.Drawing.Point(60, 12);
+            this.pictureBox1.Location = new System.Drawing.Point(60, 4);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(191, 71);
+            this.pictureBox1.Size = new System.Drawing.Size(217, 82);
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.pictureBox1.TabIndex = 8;
             this.pictureBox1.TabStop = false;
@@ -271,7 +271,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(67, 207);
+            this.label4.Location = new System.Drawing.Point(67, 206);
             this.label4.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(152, 18);

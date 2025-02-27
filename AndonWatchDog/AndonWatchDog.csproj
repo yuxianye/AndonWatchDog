@@ -127,6 +127,7 @@
   <ItemGroup>
     <None Include="Images\legato_logo.jpg" />
     <None Include="Images\LOGO.png" />
+    <Content Include="Images\audi_logo.png" />
     <Content Include="WatchDog-28.ico" />
   </ItemGroup>
   <ItemGroup>
