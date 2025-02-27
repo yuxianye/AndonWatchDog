@@ -63,9 +63,9 @@ namespace AndonWatchDog.Properties {
         /// <summary>
         ///   查找 System.Drawing.Bitmap 类型的本地化资源。
         /// </summary>
-        internal static System.Drawing.Bitmap legato_logo {
+        internal static System.Drawing.Bitmap audi_logo {
             get {
-                object obj = ResourceManager.GetObject("legato_logo", resourceCulture);
+                object obj = ResourceManager.GetObject("audi_logo", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
