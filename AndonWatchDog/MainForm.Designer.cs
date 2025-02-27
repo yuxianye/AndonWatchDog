@@ -203,7 +203,7 @@
             this.nudMonitorOn.Location = new System.Drawing.Point(227, 162);
             this.nudMonitorOn.Margin = new System.Windows.Forms.Padding(4);
             this.nudMonitorOn.Maximum = new decimal(new int[] {
-            24,
+            23,
             0,
             0,
             0});
@@ -223,7 +223,7 @@
             this.nudMonitorOff.Location = new System.Drawing.Point(227, 205);
             this.nudMonitorOff.Margin = new System.Windows.Forms.Padding(4);
             this.nudMonitorOff.Maximum = new decimal(new int[] {
-            24,
+            23,
             0,
             0,
             0});
