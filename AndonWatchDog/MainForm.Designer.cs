@@ -240,7 +240,7 @@
             // 
             // pictureBox1
             // 
-            this.pictureBox1.Image = global::AndonWatchDog.Properties.Resources.legato_logo;
+            this.pictureBox1.Image = global::AndonWatchDog.Properties.Resources.LOGO;
             this.pictureBox1.Location = new System.Drawing.Point(60, 12);
             this.pictureBox1.Name = "pictureBox1";
             this.pictureBox1.Size = new System.Drawing.Size(191, 71);
@@ -250,7 +250,7 @@
             // 
             // pictureBox2
             // 
-            this.pictureBox2.Image = global::AndonWatchDog.Properties.Resources.LOGO;
+            this.pictureBox2.Image = global::AndonWatchDog.Properties.Resources.audi_logo;
             this.pictureBox2.Location = new System.Drawing.Point(338, 12);
             this.pictureBox2.Name = "pictureBox2";
             this.pictureBox2.Size = new System.Drawing.Size(191, 71);
