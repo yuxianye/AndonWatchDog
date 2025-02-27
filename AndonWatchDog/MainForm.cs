@@ -476,7 +476,12 @@ namespace AndonWatchDog
             int.TryParse(ConfigHelper.GetAppSetting("MoniterPowerOn"), out int onHour);
             //Logger.Info($"MoniterPowerOff:{offHour} MoniterPowerOn{onHour}");
 
-            if (DateTime.Now.Hour >= offHour && DateTime.Now.Hour < onHour)
+
+
+
+            // offHour< onHour 情况，例如中午12点关，13点开。offHour? onHour 情况，例如中午7点关，19点开
+            if ((offHour< onHour && DateTime.Now.Hour >= offHour && DateTime.Now.Hour < onHour )
+             || ( offHour> onHour && ( DateTime.Now.Hour >= offHour || DateTime.Now.Hour < onHour)))
             {
                 // 启动屏幕保护程序，但不锁定工作站
                 //bool r = SystemParametersInfo(0x0021, 0, "scrnsave.scr", 0);
@@ -485,20 +490,20 @@ namespace AndonWatchDog
                 // 使用SystemParametersInfo来启动屏保，这里的"scrnsave.scr"应为完整路径或确保系统能找到的路径名。
                 //Logger.Info($"screen save :{r}");
                 Logger.Info($"screen save start");
-
+                isRefresh = false;
                 //isMoniterOn = false;
                 return;
             }
-            else
-            {
+            // else if 
+            // {
 
-                WinAPI.mouse_event(WinAPI.MOUSEEVENTF_LEFTDOWN, 0, 0, 0, 0);
-                WinAPI.mouse_event(WinAPI.MOUSEEVENTF_LEFTUP, 0, 0, 0, 0);
-                Logger.Info("mouse move for screen wakeup");
+                // WinAPI.mouse_event(WinAPI.MOUSEEVENTF_LEFTDOWN, 0, 0, 0, 0);
+                // WinAPI.mouse_event(WinAPI.MOUSEEVENTF_LEFTUP, 0, 0, 0, 0);
+                // Logger.Info("mouse move for screen wakeup");
 
                 //isMoniterOn = true;
 
-            }
+            // }
 
 
             //////////////////////////////////////////////////
