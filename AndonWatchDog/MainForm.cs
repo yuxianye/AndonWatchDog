@@ -647,6 +647,12 @@ namespace AndonWatchDog
                 Logger.Info("Ctrl+F5 has been sent.");
                 isRefresh = true;
             }
+            else if (isRefresh == false )
+            {
+                SendKeys.SendWait("^{F5}");
+                Logger.Info("Ctrl+F5 has been sent.");
+                isRefresh = true;
+            }
             else
             {
 
