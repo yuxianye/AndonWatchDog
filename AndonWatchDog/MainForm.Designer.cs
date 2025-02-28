@@ -266,7 +266,7 @@
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(143, 18);
             this.label3.TabIndex = 10;
-            this.label3.Text = "Monitor on at :";
+            this.label3.Text = "Monitor on at:";
             // 
             // label4
             // 
@@ -276,7 +276,7 @@
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(152, 18);
             this.label4.TabIndex = 11;
-            this.label4.Text = "Monitor off at :";
+            this.label4.Text = "Monitor off at:";
             // 
             // MainForm
             // 
