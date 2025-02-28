@@ -480,8 +480,8 @@ namespace AndonWatchDog
 
 
             // offHour< onHour 情况，例如中午12点关，13点开。offHour? onHour 情况，例如中午7点关，19点开
-            if ((offHour< onHour && DateTime.Now.Hour >= offHour && DateTime.Now.Hour < onHour )
-             || ( offHour> onHour && ( DateTime.Now.Hour >= offHour || DateTime.Now.Hour < onHour)))
+            if ((offHour < onHour && DateTime.Now.Hour >= offHour && DateTime.Now.Hour < onHour)
+             || (offHour > onHour && (DateTime.Now.Hour >= offHour || DateTime.Now.Hour < onHour)))
             {
                 // 启动屏幕保护程序，但不锁定工作站
                 //bool r = SystemParametersInfo(0x0021, 0, "scrnsave.scr", 0);
@@ -497,11 +497,11 @@ namespace AndonWatchDog
             // else if 
             // {
 
-                // WinAPI.mouse_event(WinAPI.MOUSEEVENTF_LEFTDOWN, 0, 0, 0, 0);
-                // WinAPI.mouse_event(WinAPI.MOUSEEVENTF_LEFTUP, 0, 0, 0, 0);
-                // Logger.Info("mouse move for screen wakeup");
+            // WinAPI.mouse_event(WinAPI.MOUSEEVENTF_LEFTDOWN, 0, 0, 0, 0);
+            // WinAPI.mouse_event(WinAPI.MOUSEEVENTF_LEFTUP, 0, 0, 0, 0);
+            // Logger.Info("mouse move for screen wakeup");
 
-                //isMoniterOn = true;
+            //isMoniterOn = true;
 
             // }
 
@@ -647,12 +647,12 @@ namespace AndonWatchDog
                 Logger.Info("Ctrl+F5 has been sent.");
                 isRefresh = true;
             }
-            else if (isRefresh == false )
-            {
-                SendKeys.SendWait("^{F5}");
-                Logger.Info("Ctrl+F5 has been sent.");
-                isRefresh = true;
-            }
+            //else if (isRefresh == false )
+            //{
+            //    SendKeys.SendWait("^{F5}");
+            //    Logger.Info("Ctrl+F5 has been sent.");
+            //    isRefresh = true;
+            //}
             else
             {
 

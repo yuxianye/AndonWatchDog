@@ -141,7 +141,7 @@
             // 
             // nud_interval
             // 
-            this.nud_interval.Location = new System.Drawing.Point(227, 120);
+            this.nud_interval.Location = new System.Drawing.Point(227, 119);
             this.nud_interval.Margin = new System.Windows.Forms.Padding(4);
             this.nud_interval.Maximum = new decimal(new int[] {
             60,
@@ -200,7 +200,7 @@
             // 
             // nudMonitorOn
             // 
-            this.nudMonitorOn.Location = new System.Drawing.Point(227, 162);
+            this.nudMonitorOn.Location = new System.Drawing.Point(227, 161);
             this.nudMonitorOn.Margin = new System.Windows.Forms.Padding(4);
             this.nudMonitorOn.Maximum = new decimal(new int[] {
             23,
@@ -220,7 +220,7 @@
             // 
             // nudMonitorOff
             // 
-            this.nudMonitorOff.Location = new System.Drawing.Point(227, 204);
+            this.nudMonitorOff.Location = new System.Drawing.Point(227, 203);
             this.nudMonitorOff.Margin = new System.Windows.Forms.Padding(4);
             this.nudMonitorOff.Maximum = new decimal(new int[] {
             23,
@@ -261,20 +261,20 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(76, 164);
+            this.label3.Location = new System.Drawing.Point(85, 164);
             this.label3.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(143, 18);
+            this.label3.Size = new System.Drawing.Size(134, 18);
             this.label3.TabIndex = 10;
             this.label3.Text = "Monitor on at:";
             // 
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(67, 206);
+            this.label4.Location = new System.Drawing.Point(76, 206);
             this.label4.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(152, 18);
+            this.label4.Size = new System.Drawing.Size(143, 18);
             this.label4.TabIndex = 11;
             this.label4.Text = "Monitor off at:";
             // 
