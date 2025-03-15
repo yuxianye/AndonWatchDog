@@ -58,9 +58,11 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
+    <Reference Include="System.Configuration.Install" />
     <Reference Include="System.Core" />
     <Reference Include="System.DirectoryServices" />
     <Reference Include="System.IO.Compression" />
+    <Reference Include="System.Management" />
     <Reference Include="System.Numerics" />
     <Reference Include="System.Runtime.Remoting" />
     <Reference Include="System.Web.Extensions" />
@@ -81,6 +83,12 @@
     <Compile Include="DomainHelper.cs" />
     <Compile Include="EdgeHelper.cs" />
     <Compile Include="LogHelper.cs" />
+    <Compile Include="MyInstaller.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="MyInstaller.Designer.cs">
+      <DependentUpon>MyInstaller.cs</DependentUpon>
+    </Compile>
     <Compile Include="WinAPI.cs" />
     <Compile Include="ShortcutManagement.cs" />
     <Compile Include="MainForm.cs">

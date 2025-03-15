@@ -5,6 +5,8 @@ VisualStudioVersion = 17.9.34714.143
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AndonWatchDog", "AndonWatchDog\AndonWatchDog.csproj", "{D64E1DBF-0F4D-4A2E-93C9-C3D9314F129F}"
 EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "AndonSetup", "AndonSetup\AndonSetup.vdproj", "{BB36F452-5050-E2AA-4313-DB60377C8D23}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,8 @@ Global
 		{D64E1DBF-0F4D-4A2E-93C9-C3D9314F129F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D64E1DBF-0F4D-4A2E-93C9-C3D9314F129F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D64E1DBF-0F4D-4A2E-93C9-C3D9314F129F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BB36F452-5050-E2AA-4313-DB60377C8D23}.Debug|Any CPU.ActiveCfg = Debug
+		{BB36F452-5050-E2AA-4313-DB60377C8D23}.Release|Any CPU.ActiveCfg = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
